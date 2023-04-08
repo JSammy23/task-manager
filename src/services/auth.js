@@ -14,3 +14,5 @@ export const logout = () => {
 export const createUser = (email, password) => {
     return createUserWithEmailAndPassword(auth, email, password);
 };
+
+export default auth;
