@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import app from "../firebase";
-import { login } from "../services/auth";
+import { login, createUser } from "../services/auth";
+import { useNavigate } from "react-router-dom";
 import './LoginPage.Styles.css';        
 
 
@@ -11,6 +12,8 @@ const LoginPage = () => {
     const [password, setPassword] = useState('')
     const [error, setError] = useState('')
 
+    const navigate = useNavigate();
+
     const handleLogin = (event) => {
         event.preventDefault();
 
@@ -18,10 +21,11 @@ const LoginPage = () => {
             .then(() => {
                 console.log('Logged in successfully!')
                 // Redirect to dashboard
+                navigate('/');
             })
             .catch((error) => {
                 setError(error.message)
-            }) ;
+            });
     };
 
     const handleInputChange = (e) => {
@@ -30,6 +34,21 @@ const LoginPage = () => {
         } else {
             e.target.parentElement.classList.remove('has-value');
         }
+    };
+
+    const handleSignUp = (event) => {
+        event.preventDefault();
+
+        createUser(email, password)
+            .then(() => {
+                console.log('User created successfully')
+                // Console log user
+                // redirect to dashboard
+                navigate('/');
+            })
+            .catch((error) => {
+                setError(error.message)
+            });
     };
 
 
@@ -45,7 +64,10 @@ const LoginPage = () => {
                     <input type="password" name="" value={password} onChange={(e) => setPassword(e.target.value)} onBlur={handleInputChange} onFocus={handleInputChange} />
                     <label>Password</label>
                 </div>
-                <button className="login-button" type="submit">Log In</button>
+                <div className="controls">
+                    <button className="login-button" type="submit">Log In</button>
+                    <button onClick={handleSignUp} className="sign-up-button" >Sign Up</button>
+                </div>
                 {error && <div>{error}</div>}
             </form>
         </div>

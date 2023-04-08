@@ -65,7 +65,13 @@ body {
   font-size: 1em;
 }
 
-.login-button {
+.controls {
+    display: flex;
+    justify-content: space-between;
+}
+
+.login-button,
+.sign-up-button {
   position: relative;
   display: inline-block;
   padding: 10px 20px;
@@ -82,7 +88,8 @@ body {
   cursor: pointer;
 }
 
-.login-button:hover {
+.login-button:hover,
+.sign-up-button:hover {
   background: #03e9f4;
   color: #fff;
   border-radius: 5px;
@@ -90,4 +97,11 @@ body {
               0 0 25px #03e9f4,
               0 0 50px #03e9f4,
               0 0 100px #03e9f4;
+}
+
+@media screen and (max-width: 488px) {
+    .login-box {
+        width: 17em;
+        padding: 20px;
+    }
 }
