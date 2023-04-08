@@ -3,7 +3,7 @@ import styled from 'styled-components'
 
 const StyledHeader = styled.header`
     background: linear-gradient(to right, #34e89e, #0f3443);
-    padding: .1em;
+    padding: .3em;
 `;
 
 const StyledLogo = styled.h1`
