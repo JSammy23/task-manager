@@ -6,11 +6,13 @@ import { onAuthStateChanged } from 'firebase/auth'
 const DashboardPage = () => {
 
   const [showProfile, setShowProfile] = useState(false);
-  const [currentUser, setCurrentUser] = useState(null);
+  const [authObject, setAuthObject] = useState(auth)
+  const [currentUser, setCurrentUser] = useState(null)
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
-      setCurrentUser(user);
+      setCurrentUser(user)
+      setAuthObject(auth);
     });
     return unsubscribe;
   }, []);
