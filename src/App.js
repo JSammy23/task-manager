@@ -8,7 +8,7 @@ import auth from "./services/auth";
 function App() {
 
   const [authenticated, setAuthenticated] = useState(false)
-  const [currentUser, setCurrentUser] = useState(null);
+  
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -23,12 +23,6 @@ function App() {
     };
   }, []);
 
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      setCurrentUser(user)
-    });
-    return unsubscribe;
-  }, []);
 
   const handleLoginSuccess = () => {
     setAuthenticated(true);
@@ -44,7 +38,7 @@ function App() {
         <Routes>
           <Route path="/login" element={<LoginPage />} />
           {authenticated ? (
-            <Route path="/" element={<DashboardPage currentUser={currentUser} />} />
+            <Route path="/" element={<DashboardPage  />} />
           ) : (
             <Route
               path="/"

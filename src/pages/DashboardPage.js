@@ -1,16 +1,26 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Header from '../components/Header'
 import auth from '../services/auth'
+import { onAuthStateChanged } from 'firebase/auth'
 
-const DashboardPage = ({ currentUser }) => {
+const DashboardPage = () => {
 
   const [showProfile, setShowProfile] = useState(false);
+  const [currentUser, setCurrentUser] = useState(null);
 
-  // Check if display name is null
-  if (currentUser.displayName === null) {
-    setShowProfile(true);
-  }
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setCurrentUser(user);
+    });
+    return unsubscribe;
+  }, []);
 
+  useEffect(() => {
+    if (currentUser && currentUser.displayName === null) {
+      setShowProfile(true);
+    }
+  }, [currentUser])
+  
 
   return (
     <>
