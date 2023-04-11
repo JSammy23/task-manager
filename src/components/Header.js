@@ -33,6 +33,10 @@ const Hamburger = styled.button`
   font-size: 1.5em;
   color: #fff;
   cursor: pointer;
+
+  &:hover {
+    color: #007bff;
+  }
 `
 
 const DropdownContainer = styled.div`

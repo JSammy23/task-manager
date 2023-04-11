@@ -12,6 +12,7 @@ const UserProfile = ({ authObject, setShowProfile }) => {
     const [phoneNumber, setPhoneNumber] = useState(authObject.currentUser.phoneNumber || '');
 
     const updateUserProfile = async () => {
+      
       try {
         await updateProfile(authObject.currentUser, {
           displayName,
@@ -22,6 +23,8 @@ const UserProfile = ({ authObject, setShowProfile }) => {
       } catch (error) {
         console.log('Error updating profile: ', error)
       }
+
+      setShowProfile(false);
     };
 
     const handleCloseModule = () => {
