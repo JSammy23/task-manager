@@ -30,7 +30,7 @@ const DashboardPage = () => {
   return (
     <>
       <ThemeProvider theme={theme}>
-        <Header authObject={authObject} />
+        <Header authObject={authObject} setShowProfile={setShowProfile} />
         {showProfile && <UserProfile authObject={authObject} setShowProfile={setShowProfile} />}
       </ThemeProvider>
     </>
