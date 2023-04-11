@@ -37,3 +37,16 @@ export const Label = styled.label`
   color: #fff;
   pointer-events: none;
 `
+
+export const Button = styled.button`
+  background-color: ${props => props.primary ?  props.theme.colors.primary : props.theme.colors.secondary};
+  color: #fff;
+  font-weight: bold;
+  font-size: 1em;
+  padding: .7em;
+  border: none;
+  outline: none;
+  border-radius: 10px;
+  cursor: pointer;
+  margin-right: 1em;
+`
