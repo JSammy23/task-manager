@@ -3,6 +3,8 @@ import Header from '../components/Header'
 import auth from '../services/auth'
 import { onAuthStateChanged } from 'firebase/auth'
 import UserProfile from '../components/UserProfile/UserProfile'
+import { ThemeProvider } from 'styled-components'
+import theme from '../styles/theme'
 
 const DashboardPage = () => {
 
@@ -27,9 +29,10 @@ const DashboardPage = () => {
 
   return (
     <>
-      <Header />
-      <UserProfile currentUser={currentUser} />
-      {/* if showProfile load profile component */}
+      <ThemeProvider theme={theme}>
+        <Header authObject={authObject} />
+        {showProfile && <UserProfile authObject={authObject} setShowProfile={setShowProfile} />}
+      </ThemeProvider>
     </>
   )
 }
