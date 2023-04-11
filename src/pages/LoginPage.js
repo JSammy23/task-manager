@@ -57,12 +57,12 @@ const LoginPage = () => {
         <div className="login-box">
             <form onSubmit={handleLogin}>
                 <div className="user-box">
-                    <input type="email" name="" value={email} onChange={(e) => setEmail(e.target.value)} onBlur={handleInputChange} onFocus={handleInputChange} />
-                    <label>Email</label>
+                    <input type="email" name="email" id="email" value={email} onChange={(e) => setEmail(e.target.value)} onBlur={handleInputChange} onFocus={handleInputChange} />
+                    <label htmlFor="email" >Email</label>
                 </div>
                 <div className="user-box">
-                    <input type="password" name="" value={password} onChange={(e) => setPassword(e.target.value)} onBlur={handleInputChange} onFocus={handleInputChange} />
-                    <label>Password</label>
+                    <input type="password" name="password" id="password" value={password} onChange={(e) => setPassword(e.target.value)} onBlur={handleInputChange} onFocus={handleInputChange} />
+                    <label htmlFor="password" >Password</label>
                 </div>
                 <div className="controls">
                     <button className="login-button" type="submit">Log In</button>
