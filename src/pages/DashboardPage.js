@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import Header from '../components/Header'
 import auth from '../services/auth'
 import { onAuthStateChanged } from 'firebase/auth'
+import UserProfile from '../components/UserProfile/UserProfile'
 
 const DashboardPage = () => {
 
@@ -27,6 +28,7 @@ const DashboardPage = () => {
   return (
     <>
       <Header />
+      <UserProfile currentUser={currentUser} />
       {/* if showProfile load profile component */}
     </>
   )
