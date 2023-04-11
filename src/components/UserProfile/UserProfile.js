@@ -1,28 +1,43 @@
 import React, { useState } from 'react'
-import styled from 'styled-components'
+import { Module, Input, Label, Title } from '../../styles/StyledComponents'
 
-const StyledModule = styled.div`
-    display: flex;
-    flex-direction: column;
-    gap: 1.5em;
-`
+
+
 
 const UserProfile = ({ currentUser }) => {
 
-    const [displayName, setDisplayName] = useState(null)
+    const [displayName, setDisplayName] = useState(null);
+    const [email, setEmail] = useState(currentUser.email);
+    const [phoneNumber, setPhoneNumber] = useState(currentUser.phoneNumber);
 
 
   return (
-    <StyledModule>
+    <Module>
+      <Title>User Profile</Title>
         <form>
-            <label htmlFor='displayName' >Display Name:</label>
-            <input 
+            <Label htmlFor='displayName' color='#fff' >Display Name:</Label>
+            <Input 
             type="text"
             id='displayName'
             name='displayName'
+            onChange={(e) => setDisplayName(e.target.value)}
             required />
+            <Label>Email:</Label>
+            <Input
+            type='email'
+            id='email'
+            name='email'
+            onChange={(e) => setEmail(e.target.value)}
+            value={currentUser.email} />
+            <Label>Phone Number:</Label>
+            <Input
+            type='tel'
+            id='phoneNumber'
+            name='phoneNumber'
+            onChange={(e) => setPhoneNumber(e.target.value)}
+            value={currentUser.phoneNumber} />
         </form>
-    </StyledModule>
+    </Module>
   )
 }
 
