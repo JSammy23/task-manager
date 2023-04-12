@@ -44,14 +44,14 @@ const UserProfile = ({ authObject, setShowProfile }) => {
               onChange={(e) => setDisplayName(e.target.value)}
               value={displayName}
               required />
-              <Label>Email:</Label>
+              <Label htmlFor='email' >Email:</Label>
               <Input
               type='email'
               id='email'
               name='email'
               onChange={(e) => setEmail(e.target.value)}
               value={email} />
-              <Label>Phone Number:</Label>
+              <Label htmlFor='phoneNumber'>Phone Number:</Label>
               <Input
               type='tel'
               id='phoneNumber'
