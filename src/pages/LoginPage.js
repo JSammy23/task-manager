@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import app from "../firebase";
-import { login, createUser } from "../services/auth";
+import auth, { login, createUser } from "../services/auth";
+import db from "../services/storage";
+import { collection, addDoc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import './LoginPage.Styles.css';        
 
@@ -37,17 +39,34 @@ const LoginPage = () => {
         }
     };
 
-    const handleSignUp = (event) => {
+    const handleSignUp = async (event) => {
         event.preventDefault();
 
-        createUser(email, password)
-            .then(() => {
-                console.log('User created successfully')
-                navigate('/');
-            })
-            .catch((error) => {
-                setError(error.message)
+        try {
+            const { user } = await createUser(email, password);
+            console.log('User created successfully!');
+
+            const userRef = collection(db, 'users');
+            const userDoc = await addDoc(userRef, {
+                uid: user.uid,
+                email: user.email,
+                createdAt: new Date(),
             });
+
+            // Create the 'tasks' sub=collection for the new user
+            const tasksRef = collection(userDoc, 'tasks');
+
+            // Add a sample task to 'tasks' sub-collection
+            const taskDoc = await addDoc(tasksRef, {
+                title: 'Sample task',
+                completed: false,
+                userId: user.uid,
+            });
+
+            navigate('/');
+        } catch (error) {
+            setError(error.message)
+        }
     };
 
 
