@@ -4,7 +4,8 @@ import { login, createUser } from "../services/auth";
 import { useNavigate } from "react-router-dom";
 import './LoginPage.Styles.css';        
 
-
+// TODO:
+// 1. Handle Forgotten Password
 
 const LoginPage = () => {
 
@@ -42,8 +43,6 @@ const LoginPage = () => {
         createUser(email, password)
             .then(() => {
                 console.log('User created successfully')
-                // Console log user
-                // redirect to dashboard
                 navigate('/');
             })
             .catch((error) => {
