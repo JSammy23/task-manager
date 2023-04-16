@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import Header from '../components/Header'
+import Header from '../components/Header';
+import Sidebar from '../components/Sidebar';
 import auth from '../services/auth'
 import db from '../services/storage'
 import { collection, getDocs, addDoc, collectionGroup, query, where } from 'firebase/firestore'
@@ -10,21 +11,13 @@ import theme from '../styles/theme'
 
 const DashboardPage = () => {
 
+  // State Managment
   const [showProfile, setShowProfile] = useState(false);
   const [authObject, setAuthObject] = useState(auth);
   const [currentUser, setCurrentUser] = useState(null);
-  const [users, setUsers] = useState([]);
   const [tasks, setTasks] = useState([]);
+  const [activeFilter, setActiveFilter] = useState(null);
 
-  const usersCollectionRef = collection(db, "users")
-
-  useEffect(() => {
-    const getUsers = async () => {
-      const data = await getDocs(usersCollectionRef);
-      setUsers(data.docs.map((doc) => ({...doc.data(), id: doc.id})));
-    }
-    getUsers()
-  }, []);
 
   // Set the authObject & currentUser on authStateChange
   useEffect(() => {
@@ -59,6 +52,10 @@ const DashboardPage = () => {
     getTasks();
   }, [currentUser]);
   
+  // Set active filter
+  const handleFilterClick = (filter) => {
+    setActiveFilter(filter);
+  };
   
 
   return (
@@ -66,6 +63,10 @@ const DashboardPage = () => {
       <ThemeProvider theme={theme}>
         <Header authObject={authObject} setShowProfile={setShowProfile} />
         {showProfile && <UserProfile authObject={authObject} setShowProfile={setShowProfile} />}
+        <main>
+          <Sidebar activeFilter={activeFilter} onFilterClick={handleFilterClick} />
+          <div className="task-body"></div>
+        </main>
       </ThemeProvider>
     </>
   )
