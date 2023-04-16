@@ -60,7 +60,7 @@ const MenuItem = styled.div`
   
 
   &:hover {
-    background-color: #ddd;
+    background-color: #223750;
   }
 `;
 
