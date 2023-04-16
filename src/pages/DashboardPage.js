@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import Header from '../components/Header';
-import Sidebar from '../components/Sidebar';
+import Sidebar from '../components/Sidebar/Sidebar';
 import auth from '../services/auth'
 import db from '../services/storage'
 import { collection, getDocs, addDoc, collectionGroup, query, where } from 'firebase/firestore'

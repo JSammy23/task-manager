@@ -13,6 +13,7 @@ const Label = styled.div`
     border-bottom: 1px solid #D6D3D1;
     color: #fff;
     padding: .5em;
+
 `
 
 const FilterDiv = styled.div`
@@ -20,7 +21,8 @@ const FilterDiv = styled.div`
     flex-direction: column;
     gap: 1.2em;
     align-items: center;
-    padding-top: 3em;
+    padding-top: 1.2em;
+    padding-bottom: 3em;
 `
 
 const FilterBtn = styled.button`
@@ -41,6 +43,7 @@ const FilterBtn = styled.button`
 `
 
 const Sidebar = ({ activeFilter, onFilterClick }) => {
+
   return (
     <SidebarDiv>
         <FilterDiv>
@@ -48,6 +51,9 @@ const Sidebar = ({ activeFilter, onFilterClick }) => {
             <FilterBtn active={activeFilter === 'today'} onClick={() => onFilterClick('today')} >Today</FilterBtn>
             <FilterBtn active={activeFilter === 'weekly'} onClick={() => onFilterClick('weekly')} >Weekly</FilterBtn>
         </FilterDiv>
+        <Label>
+            <h2>Projects</h2>
+        </Label>
     </SidebarDiv>
   )
 }
