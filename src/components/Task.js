@@ -1,5 +1,7 @@
-import React from 'react'
+import { updateDoc, doc } from '@firebase/firestore';
+import React, { useState } from 'react'
 import styled from 'styled-components'
+import db from '../services/storage';
 
 const Tile = styled.div`
     display: flex;
@@ -42,10 +44,25 @@ const Checkbox = styled.input`
 
 const Task = ({ task }) => {
 
+    const [completed, setCompleted] = useState(task.completed)
+
+    const userId = task.userId;
+    const taskId = task.id;
+
+    const taskRef = doc(db, 'users', userId, 'tasks', taskId)
+
+    const handleChange = async () => {
+        // TODO: toggle completed status
+       await updateDoc(taskRef, {
+        completed: !completed
+       });
+        //    Update local state
+       setCompleted(!completed);
+    };
 
   return (
     <Tile>
-        <Checkbox type='checkbox' />
+        <Checkbox type='checkbox' checked={completed} onChange={handleChange} />
         <TaskInfo>
             <Title>{task.title}</Title>
             <Note>{task.note}</Note>
