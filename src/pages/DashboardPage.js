@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import FilterContext from '../services/FilterContext';
 import Header from '../components/Header';
 import Sidebar from '../components/Sidebar/Sidebar';
+import TaskInbox from '../components/TaskInbox';
 import auth from '../services/auth'
 import db from '../services/storage'
 import { collection, getDocs, addDoc, collectionGroup, query, where } from 'firebase/firestore'
@@ -61,10 +62,12 @@ const DashboardPage = () => {
       <ThemeProvider theme={theme}>
         <Header authObject={authObject} setShowProfile={setShowProfile} />
         {showProfile && <UserProfile authObject={authObject} setShowProfile={setShowProfile} />}
-        <main>
+        <main className='grid'>
           <FilterContext.Provider value={{activeFilter, setActiveFilter}} >
             <Sidebar />
-            <div className="task-body"></div>
+            <div className="task-body">
+              <TaskInbox />
+            </div>
           </FilterContext.Provider>
         </main>
       </ThemeProvider>
