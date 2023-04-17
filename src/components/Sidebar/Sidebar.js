@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import React from "react";
+import FilterButton from "./FilterButton";
 
 const SidebarDiv = styled.div`
     // border: 3px solid lime;
@@ -25,31 +26,16 @@ const FilterDiv = styled.div`
     padding-bottom: 3em;
 `
 
-const FilterBtn = styled.button`
-    width: 80%;
-    background-color: ${props => props.active ? '#22D3EE' : '#25a079'};
-    color: #fff;
-    font-size: 1.3em;
-    padding: .5em;
-    outline: none;
-    border: 2px solid #25a079;
-    border-color: ${props => props.active ? '#22D3EE' : '#25a079'};
-    border-radius: 8px;
-    cursor: pointer;
 
-    &:hover {
-        border: 2px solid #67E8F9;
-    }
-`
 
-const Sidebar = ({ activeFilter, onFilterClick }) => {
+const Sidebar = () => {
 
   return (
     <SidebarDiv>
         <FilterDiv>
-            <FilterBtn active={activeFilter === 'tasks'} onClick={() => onFilterClick('tasks')} >All Tasks</FilterBtn>
-            <FilterBtn active={activeFilter === 'today'} onClick={() => onFilterClick('today')} >Today</FilterBtn>
-            <FilterBtn active={activeFilter === 'weekly'} onClick={() => onFilterClick('weekly')} >Weekly</FilterBtn>
+            <FilterButton  children='All Tasks'/>
+            <FilterButton children='Today' />
+            <FilterButton children='This Week' />
         </FilterDiv>
         <Label>
             <h2>Projects</h2>

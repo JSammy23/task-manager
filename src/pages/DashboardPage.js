@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import FilterContext from '../services/FilterContext';
 import Header from '../components/Header';
 import Sidebar from '../components/Sidebar/Sidebar';
 import auth from '../services/auth'
@@ -17,6 +18,7 @@ const DashboardPage = () => {
   const [currentUser, setCurrentUser] = useState(null);
   const [tasks, setTasks] = useState([]);
   const [activeFilter, setActiveFilter] = useState(null);
+
 
 
   // Set the authObject & currentUser on authStateChange
@@ -52,10 +54,6 @@ const DashboardPage = () => {
     getTasks();
   }, [currentUser]);
   
-  // Set active filter
-  const handleFilterClick = (filter) => {
-    setActiveFilter(filter);
-  };
   
 
   return (
@@ -64,12 +62,14 @@ const DashboardPage = () => {
         <Header authObject={authObject} setShowProfile={setShowProfile} />
         {showProfile && <UserProfile authObject={authObject} setShowProfile={setShowProfile} />}
         <main>
-          <Sidebar activeFilter={activeFilter} onFilterClick={handleFilterClick} />
-          <div className="task-body"></div>
+          <FilterContext.Provider value={{activeFilter, setActiveFilter}} >
+            <Sidebar />
+            <div className="task-body"></div>
+          </FilterContext.Provider>
         </main>
       </ThemeProvider>
     </>
   )
 }
 
-export default DashboardPage
+export default DashboardPage;
