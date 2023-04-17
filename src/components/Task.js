@@ -17,7 +17,8 @@ const TaskInfo = styled.div`
 `
 
 const Title = styled.h3`
-    color: #fff;
+    color: ${(props) => (props.completed ? '#D6D3D1' : '#fff')};
+    text-decoration: ${(props) => (props.completed ? 'line-through' : 'none')};
 `;
 const Note = styled.p`
     color: #D6D3D1;
@@ -30,6 +31,7 @@ const Checkbox = styled.input`
   border: 1px solid #ccc;
   border-radius: 3px;
   margin-right: 10px;
+  cursor: pointer;
 
   &:checked {
     background-color: #34bc81;
@@ -52,11 +54,9 @@ const Task = ({ task }) => {
     const taskRef = doc(db, 'users', userId, 'tasks', taskId)
 
     const handleChange = async () => {
-        // TODO: toggle completed status
        await updateDoc(taskRef, {
         completed: !completed
        });
-        //    Update local state
        setCompleted(!completed);
     };
 
@@ -64,7 +64,7 @@ const Task = ({ task }) => {
     <Tile>
         <Checkbox type='checkbox' checked={completed} onChange={handleChange} />
         <TaskInfo>
-            <Title>{task.title}</Title>
+            <Title completed={completed} >{task.title}</Title>
             <Note>{task.note}</Note>
         </TaskInfo>
 
