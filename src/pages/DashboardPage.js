@@ -66,7 +66,7 @@ const DashboardPage = () => {
           <FilterContext.Provider value={{activeFilter, setActiveFilter}} >
             <Sidebar />
             <div className="task-body">
-              <TaskInbox />
+              <TaskInbox tasks={tasks} />
             </div>
           </FilterContext.Provider>
         </main>
