@@ -22,3 +22,15 @@ body {
   display: flex;
   flex-direction: row;
 }
+
+.grid {
+  display: grid;
+  grid-template-columns: clamp(10em, 20%, 18em) auto;
+}
+
+.task-body {
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  width: 100%;
+}
