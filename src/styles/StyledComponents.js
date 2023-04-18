@@ -3,7 +3,8 @@ import styled from "styled-components";
 export const Module = styled.div`
     display: flex;
     flex-direction: column;
-    gap: 1.5em;
+    gap: 1em;
+    background-color: #103c47;
     position: absolute;
     top: 50%;
     left: 50%;
@@ -11,6 +12,7 @@ export const Module = styled.div`
     box-shadow: 0 15px 25px rgba(0,0,0,.6);
     border-radius: 10px;
     padding: 40px;
+    z-index: 999;
 `
 
 export const Title = styled.h1`
@@ -24,7 +26,7 @@ export const Input = styled.input`
   padding: 10px 0;
   font-size: 1.3em;
   color: #fff;
-  margin-bottom: 30px;
+  margin-bottom: 1em;
   border: none;
   border-bottom: 1px solid #fff;
   outline: none;
