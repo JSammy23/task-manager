@@ -5,7 +5,7 @@ import Sidebar from '../components/Sidebar/Sidebar';
 import TaskInbox from '../components/TaskInbox';
 import auth from '../services/auth'
 import db from '../services/storage'
-import { collection, getDocs, addDoc, collectionGroup, query, where } from 'firebase/firestore'
+import { collection, getDocs, addDoc, collectionGroup, query, where, onSnapshot } from 'firebase/firestore'
 import { onAuthStateChanged } from 'firebase/auth'
 import UserProfile from '../components/UserProfile/UserProfile'
 import { ThemeProvider } from 'styled-components'
@@ -38,22 +38,30 @@ const DashboardPage = () => {
     }
   }, [currentUser]);
 
-  // Get user tasks
-  useEffect(() => {
-    const tasksQuery = currentUser ? query(
-      collectionGroup(db, 'tasks'),
-      where('userId', '==', currentUser.uid)
-    ) : null;
+ // Get user tasks
+useEffect(() => {
+  let unsubscribe;
+  const tasksQuery = currentUser ? query(
+    collectionGroup(db, 'tasks'),
+    where('userId', '==', currentUser.uid)
+  ) : null;
 
-    const getTasks = async () => {
-      if (tasksQuery) {
-        const data = await getDocs(tasksQuery);
-        console.log(data.docs)
-        setTasks(data.docs.map((doc) => ({...doc.data(), id: doc.id})))
-      }
+  const getTasks = async () => {
+    if (tasksQuery) {
+      unsubscribe = onSnapshot(tasksQuery, (snapshot) => {
+        const tasks = snapshot.docs.map((doc) => ({...doc.data(), id: doc.id}));
+        setTasks(tasks);
+      });
     }
-    getTasks();
-  }, [currentUser]);
+  };
+  getTasks();
+
+  return () => {
+    if (unsubscribe) {
+      unsubscribe();
+    }
+  };
+}, [currentUser]);
   
   
 
@@ -66,7 +74,7 @@ const DashboardPage = () => {
           <FilterContext.Provider value={{activeFilter, setActiveFilter}} >
             <Sidebar />
             <div className="task-body">
-              <TaskInbox tasks={tasks} />
+              <TaskInbox tasks={tasks} setTasks={setTasks} currentUser={currentUser} />
             </div>
           </FilterContext.Provider>
         </main>
