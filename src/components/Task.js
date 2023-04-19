@@ -2,12 +2,18 @@ import { updateDoc, doc } from '@firebase/firestore';
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import db from '../services/storage';
+import { format, parseISO } from 'date-fns';
 
 const Tile = styled.div`
     display: flex;
     padding: .5em;
     border-bottom: 1px solid #71717A;
     align-items: center;
+    transition: .5s;
+
+    &:hover {
+      background-color: #103c47;
+    }
 `;
 
 const TaskInfo = styled.div`
@@ -44,10 +50,13 @@ const Checkbox = styled.input`
   }
 `;
 
+
+
 const Task = ({ task }) => {
 
     const [completed, setCompleted] = useState(task.completed)
 
+    // Set task & user
     const userId = task.userId;
     const taskId = task.id;
 
@@ -60,6 +69,13 @@ const Task = ({ task }) => {
        setCompleted(!completed);
     };
 
+    // Format dueDate
+    let formattedDate;
+    if (task.dueDate) {
+        const dueDate = task.dueDate.toDate(); // convert Firestore Timestamp to Date object
+        formattedDate = dueDate.toLocaleDateString(); // format the Date object
+    }
+
   return (
     <Tile>
         <Checkbox type='checkbox' checked={completed} onChange={handleChange} />
@@ -67,7 +83,7 @@ const Task = ({ task }) => {
             <Title completed={completed} >{task.title}</Title>
             <Note>{task.note}</Note>
         </TaskInfo>
-
+        <Note>{formattedDate}</Note>
     </Tile>
   )
 }

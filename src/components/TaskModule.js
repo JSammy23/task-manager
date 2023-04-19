@@ -7,24 +7,23 @@ const TaskModule = ({header, action, task, showModule, addTask}) => {
 
   const [title, setTitle] = useState(task?.title || '');
   const [note, setNote] = useState(task?.note || '');
-  const [dueDate, setDueDate] = useState(task?.dueDate || '');
+  const [dueDate, setDueDate] = useState(task?.dueDate || null);
 
   const handleCloseModule = () => {
     showModule(false);
   };
 
   const createTask = (title, note, dueDate) => {
-    const date = new Date(dueDate);
-    const isValidDate = !isNaN(date.valueOf());
-
-    if (!isValidDate) {
-      throw new Error('Invalid date format');
+    let dueDateObject = null;
+    if (dueDate !== null) {
+      const date = new Date(dueDate);
+      dueDateObject = date;
     }
 
     return {
         title: title,
         note: note,
-        dueDate: new Date(dueDate),
+        dueDate: dueDateObject,
         completed: false,
     };
 };
