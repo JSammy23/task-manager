@@ -77,10 +77,9 @@ const TaskInbox = ({ tasks, setTasks, currentUser }) => {
 
     // Add a new task
     async function handleAddTask(task) {
+        console.log('handleAddTask called')
         console.log(currentUser.uid)
         const newTask = await addTask(currentUser.uid, task);
-        await new Promise(resolve => setTimeout(resolve, 1000)); // add delay
-        setTasks((tasks) => [...tasks, newTask]);
     };
 
     const toggleAddTaskModule = () => {

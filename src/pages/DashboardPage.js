@@ -21,8 +21,8 @@ const DashboardPage = () => {
   const [activeFilter, setActiveFilter] = useState(null);
 
   useEffect(() => {
-    console.log('Dash Mounted')
-  }, []);
+    console.log('Current User state altered')
+  }, [currentUser]);
 
   // Set the authObject & currentUser on authStateChange
   useEffect(() => {
@@ -66,6 +66,7 @@ const DashboardPage = () => {
       }
     };
   }, [currentUser]);
+  
   
   
 

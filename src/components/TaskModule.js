@@ -29,7 +29,8 @@ const TaskModule = ({header, action, task, showModule, addTask}) => {
 };
 
   const handleAddTask = () => {
-    addTask(createTask(title, note, dueDate))
+    addTask(createTask(title, note, dueDate));
+    showModule(false);
   }
 
   return (

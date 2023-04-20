@@ -10,6 +10,7 @@ const Tile = styled.div`
     border-bottom: 1px solid #71717A;
     align-items: center;
     transition: .5s;
+    justify-content: space-between;
 
     &:hover {
       background-color: #103c47;
@@ -52,7 +53,7 @@ const Checkbox = styled.input`
 
 
 
-const Task = ({ task }) => {
+const Task = React.memo(({ task }) => {
   
 
     const [completed, setCompleted] = useState(task.completed)
@@ -60,7 +61,7 @@ const Task = ({ task }) => {
     // Set task & user
     const userId = task.userId;
     const taskId = task.id;
-    console.log(userId, taskId);
+    // console.log(task);
     const taskRef = doc(db, 'users', userId, 'tasks', taskId)
 
     
@@ -73,22 +74,26 @@ const Task = ({ task }) => {
     };
 
     // Format dueDate
-    // let formattedDate;
-    // if (task.dueDate) {
-    //     const dueDate = task.dueDate.toDate(); // convert Firestore Timestamp to Date object
-    //     formattedDate = dueDate.toLocaleDateString(); // format the Date object
-    // }
+    let formattedDate;
+    if (task.dueDate) {
+        const dueDate = task.dueDate.toDate(); // convert Firestore Timestamp to Date object
+        formattedDate = format(dueDate, "MMM do")
+    }
 
   return (
     <Tile>
-        <Checkbox type='checkbox' checked={completed} onChange={handleChange} />
-        <TaskInfo>
-            <Title completed={completed} >{task.title}</Title>
-            <Note>{task.note}</Note>
-        </TaskInfo>
-        {/* <Note>{formattedDate}</Note> */}
+        <div className='flex'>
+          <Checkbox type='checkbox' checked={completed} onChange={handleChange} />
+          <TaskInfo>
+              <Title completed={completed} >{task.title}</Title>
+              <Note>{task.note}</Note>
+          </TaskInfo>
+        </div>
+        <div>
+          <Note>{formattedDate}</Note>
+        </div>
     </Tile>
   )
-}
+});
 
 export default Task
