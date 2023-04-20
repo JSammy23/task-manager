@@ -1,5 +1,5 @@
 import { updateDoc, doc } from '@firebase/firestore';
-import React, { useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import styled from 'styled-components'
 import db from '../services/storage';
 import { format, parseISO } from 'date-fns';
@@ -53,14 +53,17 @@ const Checkbox = styled.input`
 
 
 const Task = ({ task }) => {
+  
 
     const [completed, setCompleted] = useState(task.completed)
 
     // Set task & user
     const userId = task.userId;
     const taskId = task.id;
-
+    console.log(userId, taskId);
     const taskRef = doc(db, 'users', userId, 'tasks', taskId)
+
+    
 
     const handleChange = async () => {
        await updateDoc(taskRef, {
@@ -70,11 +73,11 @@ const Task = ({ task }) => {
     };
 
     // Format dueDate
-    let formattedDate;
-    if (task.dueDate) {
-        const dueDate = task.dueDate.toDate(); // convert Firestore Timestamp to Date object
-        formattedDate = dueDate.toLocaleDateString(); // format the Date object
-    }
+    // let formattedDate;
+    // if (task.dueDate) {
+    //     const dueDate = task.dueDate.toDate(); // convert Firestore Timestamp to Date object
+    //     formattedDate = dueDate.toLocaleDateString(); // format the Date object
+    // }
 
   return (
     <Tile>
@@ -83,7 +86,7 @@ const Task = ({ task }) => {
             <Title completed={completed} >{task.title}</Title>
             <Note>{task.note}</Note>
         </TaskInfo>
-        <Note>{formattedDate}</Note>
+        {/* <Note>{formattedDate}</Note> */}
     </Tile>
   )
 }
