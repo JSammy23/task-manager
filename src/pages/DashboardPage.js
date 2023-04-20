@@ -12,7 +12,7 @@ import { ThemeProvider } from 'styled-components'
 import theme from '../styles/theme'
 
 const DashboardPage = () => {
-
+  
   // State Managment
   const [showProfile, setShowProfile] = useState(false);
   const [authObject, setAuthObject] = useState(auth);
@@ -20,13 +20,16 @@ const DashboardPage = () => {
   const [tasks, setTasks] = useState([]);
   const [activeFilter, setActiveFilter] = useState(null);
 
-
+  useEffect(() => {
+    console.log('Dash Mounted')
+  }, []);
 
   // Set the authObject & currentUser on authStateChange
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setCurrentUser(user)
       setAuthObject(auth);
+      console.log('First')
     });
     return unsubscribe;
   }, []);
@@ -35,33 +38,34 @@ const DashboardPage = () => {
   useEffect(() => {
     if (currentUser && currentUser.displayName === null) {
       setShowProfile(true);
+      console.log('Second')
     }
   }, [currentUser]);
 
- // Get user tasks
-useEffect(() => {
-  let unsubscribe;
-  const tasksQuery = currentUser ? query(
-    collectionGroup(db, 'tasks'),
-    where('userId', '==', currentUser.uid)
-  ) : null;
+  // Get user tasks
+  useEffect(() => {
+    let unsubscribe;
+    const tasksQuery = currentUser ? query(
+      collectionGroup(db, 'tasks'),
+      where('userId', '==', currentUser.uid)
+    ) : null;
 
-  const getTasks = async () => {
-    if (tasksQuery) {
-      unsubscribe = onSnapshot(tasksQuery, (snapshot) => {
-        const tasks = snapshot.docs.map((doc) => ({...doc.data(), id: doc.id}));
-        setTasks(tasks);
-      });
-    }
-  };
-  getTasks();
-
-  return () => {
-    if (unsubscribe) {
-      unsubscribe();
-    }
-  };
-}, [currentUser]);
+    const getTasks = async () => {
+      if (tasksQuery) {
+        unsubscribe = onSnapshot(tasksQuery, (snapshot) => {
+          const tasks = snapshot.docs.map((doc) => ({...doc.data(), id: doc.id}));
+          setTasks(tasks);
+        });
+      }
+    };
+    getTasks();
+    console.log('Third')
+    return () => {
+      if (unsubscribe) {
+        unsubscribe();
+      }
+    };
+  }, [currentUser]);
   
   
 

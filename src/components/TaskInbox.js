@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import styled from 'styled-components';
 import FilterContext from '../services/FilterContext';
 import Task from './Task';
@@ -60,6 +60,10 @@ const TaskInbox = ({ tasks, setTasks, currentUser }) => {
 
     let taskCount = tasks.length;
 
+
+    useEffect(() => {
+        console.log('TaskBox Mounted')
+      }, []);
     
 
     // Define function to add new task
@@ -75,7 +79,8 @@ const TaskInbox = ({ tasks, setTasks, currentUser }) => {
     async function handleAddTask(task) {
         console.log(currentUser.uid)
         const newTask = await addTask(currentUser.uid, task);
-        setTasks((tasks) => [...tasks, {...newTask, id: newTask}]);
+        await new Promise(resolve => setTimeout(resolve, 1000)); // add delay
+        setTasks((tasks) => [...tasks, newTask]);
     };
 
     const toggleAddTaskModule = () => {
