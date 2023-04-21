@@ -1,6 +1,7 @@
 import React, { useContext, useState, useEffect } from 'react';
 import styled from 'styled-components';
 import FilterContext from '../services/FilterContext';
+import { isToday, isThisWeek, addDays } from 'date-fns';
 import Task from './Task';
 import { addDoc, collection } from 'firebase/firestore';
 import db from '../services/storage';
@@ -52,19 +53,33 @@ const IconBtn = styled.button`
 `
 
 
-const TaskInbox = ({ tasks, setTasks, currentUser }) => {
+const TaskInbox = ({ tasks, currentUser }) => {
 
     const [addTaskModule, setAddTaskModule] = useState(false);
+    const [daily, setDaily] = useState([]);
+    const [weekly, setWeekly] = useState([]);
 
     const { activeFilter } = useContext(FilterContext);
 
     let taskCount = tasks.length;
 
-
+    // Set daily tasks
     useEffect(() => {
-        console.log('TaskBox Mounted')
-      }, []);
-    
+        const dailyTasks = tasks.filter(task => {
+            const dueDate = addDays(task.dueDate.toDate(), 1);
+            return isToday(dueDate)
+        });
+        setDaily(dailyTasks);
+    }, [tasks]);
+
+    // Set weekly tasks
+    useEffect(() => {
+        const weeklyTasks = tasks.filter(task => {
+            const dueDate = addDays(task.dueDate.toDate(), 1);
+            return isThisWeek(dueDate);
+        });
+        setWeekly(weeklyTasks);
+    }, [tasks]);
 
     // Define function to add new task
     async function addTask(userId, task) {
@@ -77,14 +92,24 @@ const TaskInbox = ({ tasks, setTasks, currentUser }) => {
 
     // Add a new task
     async function handleAddTask(task) {
-        console.log('handleAddTask called')
-        console.log(currentUser.uid)
         const newTask = await addTask(currentUser.uid, task);
     };
 
     const toggleAddTaskModule = () => {
         setAddTaskModule(true);
     };
+
+    // Render tasks by filter
+    const renderTasks = () => {
+        switch (activeFilter) {
+            default:
+                return tasks.map(task => <Task key={task.id} task={task} />);
+            case 'Today':
+                return daily.map(task => <Task key={task.id} task={task} />);
+            case 'This Week':
+                return weekly.map(task => <Task key={task.id} task={task} />);
+        }
+    }
 
   return (
     <TaskContainer>
@@ -95,9 +120,7 @@ const TaskInbox = ({ tasks, setTasks, currentUser }) => {
         <IconBtn onClick={toggleAddTaskModule} ><FontAwesomeIcon icon={faPlus} /></IconBtn>
         </TaskBar>
         <TaskDiv>
-            {tasks.map((task) => (
-                <Task key={task.id} task={task} />
-            ))}
+            {renderTasks()}
         </TaskDiv>
     </TaskContainer>
   )
