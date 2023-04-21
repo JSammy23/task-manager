@@ -88,7 +88,7 @@ const TaskInbox = ({ tasks, setTasks, currentUser }) => {
 
   return (
     <TaskContainer>
-        {addTaskModule && <TaskModule action="Add Task" header="New Task" showModule={setAddTaskModule} addTask={handleAddTask}/>}
+        {addTaskModule && <TaskModule action="add" header="New Task" btnText='Add Task' showModule={setAddTaskModule} addTask={handleAddTask}/>}
         <TaskHeader>{activeFilter}</TaskHeader>
         <TaskBar>
         <p>Tasks ({taskCount})</p>
