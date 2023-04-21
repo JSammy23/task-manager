@@ -1,8 +1,12 @@
-import { updateDoc, doc } from '@firebase/firestore';
+import { updateDoc, doc, deleteDoc } from '@firebase/firestore';
 import React, { useMemo, useState } from 'react'
-import styled from 'styled-components'
 import db from '../services/storage';
 import { format, parseISO } from 'date-fns';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPenToSquare } from '@fortawesome/free-solid-svg-icons';
+import { faTrashCan } from '@fortawesome/free-regular-svg-icons';
+import styled from 'styled-components'
+
 
 const Tile = styled.div`
     display: flex;
@@ -51,6 +55,20 @@ const Checkbox = styled.input`
   }
 `;
 
+const TaskBtn = styled.button`
+  background-color: transparent;
+  outline: none;
+  border: none;
+  color: #D6D3D1;
+  cursor: pointer;
+  font-size: 1em;
+  margin-right: .4em;
+
+  &:hover {
+    color: #67E8F9;
+  }
+`
+
 
 
 const Task = React.memo(({ task }) => {
@@ -66,11 +84,16 @@ const Task = React.memo(({ task }) => {
 
     
 
-    const handleChange = async () => {
-       await updateDoc(taskRef, {
+    const toggleComplete = async () => {
+      setCompleted(!completed);
+      await updateDoc(taskRef, {
         completed: !completed
        });
-       setCompleted(!completed);
+    };
+
+    // Handle delete task
+    const handleDeleteTask = async () => {
+      await deleteDoc(taskRef)
     };
 
     // Format dueDate
@@ -78,20 +101,28 @@ const Task = React.memo(({ task }) => {
     if (task.dueDate) {
         const dueDate = task.dueDate.toDate(); // convert Firestore Timestamp to Date object
         formattedDate = format(dueDate, "MMM do")
-    }
+    };
 
   return (
     <Tile>
         <div className='flex'>
-          <Checkbox type='checkbox' checked={completed} onChange={handleChange} />
+          <Checkbox type='checkbox' checked={completed} onChange={toggleComplete} />
           <TaskInfo>
               <Title completed={completed} >{task.title}</Title>
               <Note>{task.note}</Note>
           </TaskInfo>
         </div>
-        <div>
+        <TaskInfo>
           <Note>{formattedDate}</Note>
-        </div>
+          <div className='flex' >
+            <TaskBtn>
+              <FontAwesomeIcon icon={faPenToSquare} />
+            </TaskBtn>
+            <TaskBtn onClick={handleDeleteTask} >
+              <FontAwesomeIcon icon={faTrashCan} />
+            </TaskBtn>
+          </div>
+        </TaskInfo>
     </Tile>
   )
 });
