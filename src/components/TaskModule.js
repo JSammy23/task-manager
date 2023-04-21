@@ -1,16 +1,22 @@
 import React, { useState } from 'react';
+import { doc, updateDoc } from 'firebase/firestore';
+
 import styled, { ThemeProvider } from 'styled-components';
 import { Module, Input, Label, Title, Button } from '../styles/StyledComponents';
 import theme from '../styles/theme';
 
-const TaskModule = ({header, action, task, showModule, addTask}) => {
+const TaskModule = ({header, action, btnText, task, taskRef, showModule, addTask, setEditTask}) => {
 
   const [title, setTitle] = useState(task?.title || '');
   const [note, setNote] = useState(task?.note || '');
   const [dueDate, setDueDate] = useState(task?.dueDate || null);
 
   const handleCloseModule = () => {
-    showModule(false);
+    if (action === 'add') {
+      showModule(false);
+    } else if (action === 'edit') {
+      setEditTask(false);
+    }
   };
 
   const createTask = (title, note, dueDate) => {
@@ -26,11 +32,31 @@ const TaskModule = ({header, action, task, showModule, addTask}) => {
         dueDate: dueDateObject,
         completed: false,
     };
-};
+  };
 
+  // Handle add task
   const handleAddTask = () => {
     addTask(createTask(title, note, dueDate));
     showModule(false);
+  };
+
+  // Handle edit task
+  const handleEditTask = async () => {
+    setEditTask(false);
+    // db edit
+    await updateDoc(taskRef, {
+      title: title,
+      note: note,
+      dueDate: dueDate,
+    });
+  };
+
+  const handleConfirmClick = () => {
+    if (action === 'add') {
+      handleAddTask();
+    } else if (action === 'edit') {
+      handleEditTask();
+    }
   }
 
   return (
@@ -44,7 +70,7 @@ const TaskModule = ({header, action, task, showModule, addTask}) => {
             <Input type='text' name='note' id='note' value={note} onChange={(e) => setNote(e.target.value)} />
             <Label htmlFor='dueDate'>dueDate: </Label>
             <Input type='date' name='dueDate' id='dueDate' value={dueDate} onChange={(e) => setDueDate(e.target.value)} />
-            <Button primary type='button' onClick={handleAddTask} >{action}</Button>
+            <Button primary type='button' onClick={handleConfirmClick} >{btnText}</Button>
             <Button type='button' onClick={handleCloseModule} >Cancel</Button>
           </form>
       </Module>
