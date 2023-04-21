@@ -5,7 +5,7 @@ import Sidebar from '../components/Sidebar/Sidebar';
 import TaskInbox from '../components/TaskInbox';
 import auth from '../services/auth'
 import db from '../services/storage'
-import { collection, getDocs, addDoc, collectionGroup, query, where, onSnapshot } from 'firebase/firestore'
+import { collectionGroup, query, where, onSnapshot } from 'firebase/firestore'
 import { onAuthStateChanged } from 'firebase/auth'
 import UserProfile from '../components/UserProfile/UserProfile'
 import { ThemeProvider } from 'styled-components'
@@ -18,18 +18,14 @@ const DashboardPage = () => {
   const [authObject, setAuthObject] = useState(auth);
   const [currentUser, setCurrentUser] = useState(null);
   const [tasks, setTasks] = useState([]);
-  const [activeFilter, setActiveFilter] = useState(null);
+  const [activeFilter, setActiveFilter] = useState('All Tasks');
 
-  useEffect(() => {
-    console.log('Current User state altered')
-  }, [currentUser]);
 
   // Set the authObject & currentUser on authStateChange
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setCurrentUser(user)
       setAuthObject(auth);
-      console.log('First')
     });
     return unsubscribe;
   }, []);
@@ -38,7 +34,6 @@ const DashboardPage = () => {
   useEffect(() => {
     if (currentUser && currentUser.displayName === null) {
       setShowProfile(true);
-      console.log('Second')
     }
   }, [currentUser]);
 
@@ -59,7 +54,7 @@ const DashboardPage = () => {
       }
     };
     getTasks();
-    console.log('Third')
+  
     return () => {
       if (unsubscribe) {
         unsubscribe();
