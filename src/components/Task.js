@@ -106,9 +106,10 @@ const Task = React.memo(({ task }) => {
 
     // Format dueDate
     let formattedDate;
+    let date;
     if (task.dueDate) {
-        const dueDate = task.dueDate.toDate(); // convert Firestore Timestamp to Date object
-        formattedDate = format(dueDate, "MMM do")
+        date = task.dueDate.toDate(); // convert Firestore Timestamp to Date object
+        formattedDate = format(date, "MMM do")
     };
 
   return (
@@ -131,7 +132,7 @@ const Task = React.memo(({ task }) => {
             </TaskBtn>
           </div>
         </TaskInfo>
-        { editTask && <TaskModule action="edit" header='Edit Task' task={task} taskRef={taskRef} setEditTask={setEditTask} btnText='Edit Task' />}
+        { editTask && <TaskModule action="edit" header='Edit Task' task={task} taskRef={taskRef} setEditTask={setEditTask} btnText='Edit Task' date={date} />}
     </Tile>
   )
 });

@@ -5,11 +5,11 @@ import styled, { ThemeProvider } from 'styled-components';
 import { Module, Input, Label, Title, Button } from '../styles/StyledComponents';
 import theme from '../styles/theme';
 
-const TaskModule = ({header, action, btnText, task, taskRef, showModule, addTask, setEditTask}) => {
+const TaskModule = ({header, action, btnText, task, date, taskRef, showModule, addTask, setEditTask}) => {
 
   const [title, setTitle] = useState(task?.title || '');
   const [note, setNote] = useState(task?.note || '');
-  const [dueDate, setDueDate] = useState(task?.dueDate || null);
+  const [dueDate, setDueDate] = useState(task ? date : null);
 
   const handleCloseModule = () => {
     if (action === 'add') {
@@ -69,7 +69,7 @@ const TaskModule = ({header, action, btnText, task, taskRef, showModule, addTask
             <Label htmlFor='note'>Note: </Label>
             <Input type='text' name='note' id='note' value={note} onChange={(e) => setNote(e.target.value)} />
             <Label htmlFor='dueDate'>dueDate: </Label>
-            <Input type='date' name='dueDate' id='dueDate' value={dueDate} onChange={(e) => setDueDate(e.target.value)} />
+            <Input type='date' name='dueDate' id='dueDate' value={dueDate ? dueDate.toISOString().substr(0, 10) : ''} onChange={(e) => setDueDate(e.target.value)} />
             <Button primary type='button' onClick={handleConfirmClick} >{btnText}</Button>
             <Button type='button' onClick={handleCloseModule} >Cancel</Button>
           </form>
