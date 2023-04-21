@@ -2,10 +2,12 @@ import { updateDoc, doc, deleteDoc } from '@firebase/firestore';
 import React, { useMemo, useState } from 'react'
 import db from '../services/storage';
 import { format, parseISO } from 'date-fns';
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 import { faTrashCan } from '@fortawesome/free-regular-svg-icons';
 import styled from 'styled-components'
+import TaskModule from './TaskModule';
 
 
 const Tile = styled.div`
@@ -74,7 +76,8 @@ const TaskBtn = styled.button`
 const Task = React.memo(({ task }) => {
   
 
-    const [completed, setCompleted] = useState(task.completed)
+    const [completed, setCompleted] = useState(task.completed);
+    const [editTask, setEditTask] = useState(false);
 
     // Set task & user
     const userId = task.userId;
@@ -90,6 +93,11 @@ const Task = React.memo(({ task }) => {
         completed: !completed
        });
     };
+
+    // Handle edit task
+    const toggleEditModule = () => {
+      setEditTask(true);
+    }
 
     // Handle delete task
     const handleDeleteTask = async () => {
@@ -115,7 +123,7 @@ const Task = React.memo(({ task }) => {
         <TaskInfo>
           <Note>{formattedDate}</Note>
           <div className='flex' >
-            <TaskBtn>
+            <TaskBtn onClick={toggleEditModule} >
               <FontAwesomeIcon icon={faPenToSquare} />
             </TaskBtn>
             <TaskBtn onClick={handleDeleteTask} >
@@ -123,6 +131,7 @@ const Task = React.memo(({ task }) => {
             </TaskBtn>
           </div>
         </TaskInfo>
+        { editTask && <TaskModule action="edit" header='Edit Task' task={task} taskRef={taskRef} setEditTask={setEditTask} btnText='Edit Task' />}
     </Tile>
   )
 });
