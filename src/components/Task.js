@@ -1,7 +1,7 @@
 import { updateDoc, doc, deleteDoc } from '@firebase/firestore';
 import React, { useMemo, useState } from 'react'
 import db from '../services/storage';
-import { format, parseISO } from 'date-fns';
+import { format, addDays } from 'date-fns';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPenToSquare } from '@fortawesome/free-solid-svg-icons';
@@ -107,8 +107,10 @@ const Task = React.memo(({ task }) => {
     // Format dueDate
     let formattedDate;
     let date;
+    let lagDate;
     if (task.dueDate) {
-        date = task.dueDate.toDate(); // convert Firestore Timestamp to Date object
+        lagDate = task.dueDate.toDate(); // convert Firestore Timestamp to Date object
+        date = addDays(lagDate, 1)
         formattedDate = format(date, "MMM do")
     };
 
@@ -132,7 +134,7 @@ const Task = React.memo(({ task }) => {
             </TaskBtn>
           </div>
         </TaskInfo>
-        { editTask && <TaskModule action="edit" header='Edit Task' task={task} taskRef={taskRef} setEditTask={setEditTask} btnText='Edit Task' date={date} />}
+        { editTask && <TaskModule action="edit" header='Edit Task' task={task} taskRef={taskRef} setEditTask={setEditTask} btnText='Edit Task' date={lagDate} />}
     </Tile>
   )
 });
