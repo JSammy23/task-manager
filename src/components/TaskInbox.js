@@ -66,8 +66,9 @@ const TaskInbox = ({ tasks, currentUser }) => {
     // Set daily tasks
     useEffect(() => {
         const dailyTasks = tasks.filter(task => {
-            const dueDate = addDays(task.dueDate.toDate(), 1);
-            return isToday(dueDate)
+            const dueDate = task.dueDate ? (typeof task.dueDate === 'string' ? new Date(task.dueDate) : task.dueDate.toDate()) : null;
+            const date = addDays(dueDate, 1);
+            return isToday(date)
         });
         setDaily(dailyTasks);
     }, [tasks]);
@@ -75,8 +76,9 @@ const TaskInbox = ({ tasks, currentUser }) => {
     // Set weekly tasks
     useEffect(() => {
         const weeklyTasks = tasks.filter(task => {
-            const dueDate = addDays(task.dueDate.toDate(), 1);
-            return isThisWeek(dueDate);
+            const dueDate = task.dueDate ? (typeof task.dueDate === 'string' ? new Date(task.dueDate) : task.dueDate.toDate()) : null;
+            const date = addDays(dueDate, 1);
+            return isThisWeek(date);
         });
         setWeekly(weeklyTasks);
     }, [tasks]);

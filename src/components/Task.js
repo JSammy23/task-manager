@@ -108,8 +108,15 @@ const Task = React.memo(({ task }) => {
     let formattedDate;
     let date;
     let lagDate;
+    // if (task.dueDate) {
+    //   console.log(typeof task.dueDate)
+    // }
     if (task.dueDate) {
+      if (typeof task.dueDate === 'string') {
+        lagDate = new Date(task.dueDate)
+      } else {
         lagDate = task.dueDate.toDate(); // convert Firestore Timestamp to Date object
+      }
         date = addDays(lagDate, 1)
         formattedDate = format(date, "MMM do")
     };

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { doc, updateDoc } from 'firebase/firestore';
 
 import styled, { ThemeProvider } from 'styled-components';
@@ -9,7 +9,13 @@ const TaskModule = ({header, action, btnText, task, date, taskRef, showModule, a
 
   const [title, setTitle] = useState(task?.title || '');
   const [note, setNote] = useState(task?.note || '');
-  const [dueDate, setDueDate] = useState(task ? date : null);
+  const [dueDate, setDueDate] = useState(null);
+
+  useEffect(() => {
+    if (action === 'edit' && date) {
+      setDueDate(date.toISOString().substr(0, 10))
+    };
+  }, [action, date]);
 
   const handleCloseModule = () => {
     if (action === 'add') {
@@ -69,7 +75,7 @@ const TaskModule = ({header, action, btnText, task, date, taskRef, showModule, a
             <Label htmlFor='note'>Note: </Label>
             <Input type='text' name='note' id='note' value={note} onChange={(e) => setNote(e.target.value)} />
             <Label htmlFor='dueDate'>dueDate: </Label>
-            <Input type='date' name='dueDate' id='dueDate' value={task && dueDate.toISOString().substr(0, 10)} onChange={(e) => setDueDate(e.target.value)} />
+            <Input type='date' name='dueDate' id='dueDate' value={dueDate ? dueDate : ''} onChange={(e) => setDueDate(e.target.value)} />
             <Button primary type='button' onClick={handleConfirmClick} >{btnText}</Button>
             <Button type='button' onClick={handleCloseModule} >Cancel</Button>
           </form>
