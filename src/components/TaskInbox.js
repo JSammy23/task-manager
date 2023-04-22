@@ -58,10 +58,22 @@ const TaskInbox = ({ tasks, currentUser }) => {
     const [addTaskModule, setAddTaskModule] = useState(false);
     const [daily, setDaily] = useState([]);
     const [weekly, setWeekly] = useState([]);
+    const [taskCount, setTaskCount] = useState(0);
 
     const { activeFilter } = useContext(FilterContext);
 
-    let taskCount = tasks.length;
+    // Define taskcount
+    useEffect(() => {
+        let count = 0;
+        if (activeFilter === 'All Tasks') {
+            count = tasks.length;
+        } else if (activeFilter === 'Today') {
+            count = daily.length;
+        } else if (activeFilter === 'This Week') {
+            count = weekly.length;
+        }
+        setTaskCount(count);
+    }, [activeFilter, tasks.length, daily.length, weekly.length])
 
     // Set daily tasks
     useEffect(() => {
