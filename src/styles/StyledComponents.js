@@ -46,9 +46,14 @@ export const Button = styled.button`
   font-weight: bold;
   font-size: 1em;
   padding: .7em;
-  border: none;
+  border: 1px solid;
+  border-color: ${props => props.primary ?  props.theme.colors.primary : props.theme.colors.secondary};
   outline: none;
   border-radius: 10px;
   cursor: pointer;
   margin-right: 1em;
+
+  &:hover {
+    border: 1px solid #67E8F9;
+  }
 `
